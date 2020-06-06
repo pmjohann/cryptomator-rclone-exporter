@@ -1,10 +1,13 @@
 FROM alpine:3.11 AS installer
 
+ARG RCLONE_VERSION=1.52.0
+ARG CRYPTOMATOR_VERSION=0.4.0
+
 RUN apk add --no-cache curl zip && \
-    curl -sS -O https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
-    curl -sSL https://github.com/cryptomator/cli/releases/download/0.4.0/cryptomator-cli-0.4.0.jar > '/usr/bin/cryptomator.jar' && \
-    unzip rclone-current-linux-amd64.zip && \
-    cd rclone-*-linux-amd64 && \
+    curl -sS -O https://downloads.rclone.org/v$RCLONE_VERSION/rclone-v$RCLONE_VERSION-linux-amd64.zip && \
+    curl -sSL https://github.com/cryptomator/cli/releases/download/$CRYPTOMATOR_VERSION/cryptomator-cli-$CRYPTOMATOR_VERSION.jar > /usr/bin/cryptomator.jar && \
+    unzip rclone-v$RCLONE_VERSION-linux-amd64.zip && \
+    cd rclone-v$RCLONE_VERSION-linux-amd64 && \
     cp rclone /usr/bin/ && \
     chown root:root /usr/bin/rclone && \
     chmod 755 /usr/bin/rclone;
