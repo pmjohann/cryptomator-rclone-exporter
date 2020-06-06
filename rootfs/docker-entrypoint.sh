@@ -26,7 +26,7 @@ if [ ! -f /home/rclone/import/masterkey.cryptomator ]; then
 fi
 
 # SERVE CONTENTS AND RECORD PID
-java -jar /usr/bin/cryptomator.jar --bind 127.0.0.1 --port 8080 --vault export=/home/rclone/import --password export=$2 &
+java -jar /usr/bin/cryptomator.jar --bind 127.0.0.1 --port 8080 --vault export=/home/rclone/import --password export=$2 2>&1 > /dev/null &
 CRYPTOMATOR_PID=$!
 sleep 5
 
