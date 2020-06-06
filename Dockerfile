@@ -21,8 +21,10 @@ COPY --from=installer /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
 COPY rootfs/ /
 
 RUN apk add --no-cache openjdk11-jre-headless && \
-    mkdir -p $HOME/.config/rclone && \
+    adduser -D rclone && \
     chmod +x /docker-entrypoint.sh
+
+USER rclone
 
 VOLUME ["/export"]
 

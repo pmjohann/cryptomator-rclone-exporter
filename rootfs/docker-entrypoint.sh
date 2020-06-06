@@ -13,19 +13,20 @@ if ! grep -q $1 /rclone.conf; then
 fi
 
 # CREATE NECESSARY CONFIG FOR RCLONE
+mkdir -p $HOME/.config/rclone
 awk '{print}' /rclone.conf /cryptomator_webdav.conf > $HOME/.config/rclone/rclone.conf
 
 # SYNC ENCRYPTED REMOTE TO LOCAL FOLDER
-rclone sync $1: /import/
+rclone sync $1: /home/rclone/import/
 
 # MAKE SURE AN RCLONE CONFIG IS MOUNTED
-if [ ! -f /import/masterkey.cryptomator ]; then
+if [ ! -f /home/rclone/import/masterkey.cryptomator ]; then
     echo "masterkey.cryptomator not found at the root of $1! Exiting..."
     exit 1
 fi
 
 # SERVE CONTENTS AND RECORD PID
-java -jar /usr/bin/cryptomator.jar --bind 127.0.0.1 --port 8080 --vault export=/import --password export=$2 &
+java -jar /usr/bin/cryptomator.jar --bind 127.0.0.1 --port 8080 --vault export=/home/rclone/import --password export=$2 &
 CRYPTOMATOR_PID=$!
 sleep 5
 
